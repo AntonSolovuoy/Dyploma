@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+   <children>
+      <ImageView fx:id="YUVFrame" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="originalFrame" fitHeight="150.0" fitWidth="200.0" layoutX="200.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="HSVFrame" fitHeight="150.0" fitWidth="200.0" layoutX="400.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="MOGFrame" fitHeight="150.0" fitWidth="200.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="binaryFrame" fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="MOG2Frame" fitHeight="150.0" fitWidth="200.0" layoutX="400.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true" />
+      <Separator layoutY="150.0" prefHeight="1.0" prefWidth="600.0" />
+      <Separator layoutX="200.0" orientation="VERTICAL" prefHeight="300.0" prefWidth="1.0" />
+      <Separator layoutX="400.0" orientation="VERTICAL" prefHeight="300.0" prefWidth="1.0" />
+   </children>
+</Pane>
