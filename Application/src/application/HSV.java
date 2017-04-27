@@ -1,15 +1,7 @@
 package application;
 
-import java.io.ByteArrayInputStream;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.videoio.VideoCapture;
+import org.opencv.imgproc.Imgproc;
 
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -19,79 +11,29 @@ public class HSV {
 	
 	@FXML
 	private ImageView imageView;
-	
-	private Mat frame;
-	
-	private VideoCapture videoCapture;
-	
-	private ScheduledExecutorService timer;
-	
-	private String path;
-	
-	@FXML
-	public void initialize() {
-		
-		videoCapture = new VideoCapture();
-		
-		frame = new Mat();
-		
-		timer = Executors.newSingleThreadScheduledExecutor();
-	}
 
-	public void setPath(String path) {
-		this.path = path;
-	}
-	
-	protected void start() {
-
-		videoCapture.open(path);
-		
-		if (videoCapture.isOpened()) {
-
-			Runnable frameGrabber = new Runnable() {
-						
-				@Override
-				public void run() {
-					try {		
-						
-						frame = new Mat();
-						
-						videoCapture.read(frame);
-						
-						if (!frame.empty()) {
-							showFrame(getHSVMask(frame.clone()));
-						}
-					} catch (Exception e) {
-						System.err.println("ERROR: " + e);
-					}
-				}
-			};
-			
-			timer.scheduleAtFixedRate(frameGrabber, 0, 33, TimeUnit.MILLISECONDS);
-		} else {
-			System.err.println("Failed to open the camera connection...");
-		}
-	}
-	
-	private Mat getHSVMask(Mat frame) {
+	public Mat getHSVMask(Mat frame, double[][] tresholdHSV) {
 		int rows = frame.rows(),
-			cols = frame.cols();
+			cols = frame.cols(),
+			type = frame.type();
 		
-		Mat mask = new Mat(rows, cols, CvType.CV_8UC3);
+		Mat hsvFrame = new Mat(rows, cols, type);
 		
+		Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV);
+		
+		double[] hsv, data = new double[3];
+		
+		Mat mask = new Mat(rows, cols, type);
+
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				
-				double[] bgr = frame.get(i, j),
-						 hsv = BGR2HSV(bgr),
-						 
-						 data = new double[3];
+				hsv = hsvFrame.get(i,  j);
+				System.out.println(hsv[0] + " " + hsv[1] + " " + hsv[2]);
 				
-				double h = hsv[0],
-					   s = hsv[1],
-					   v = hsv[2];
-				
-				if ((100 < h && h < 210) && (0.008 < s && s < 0.5) && (127 < v && v < 255)) {
+				if ((tresholdHSV[0][0] < hsv[0] && hsv[0] < tresholdHSV[0][1]) && 
+						(tresholdHSV[1][0] < hsv[1] && hsv[1] < tresholdHSV[1][1]) && 
+						(tresholdHSV[2][0] < hsv[2] && hsv[2] < tresholdHSV[2][1])) {
 					data[0] = 255;
 					data[1] = 255;
 					data[2] = 255;
@@ -108,9 +50,9 @@ public class HSV {
 		return mask;
 	}
 	
-	private void showFrame(Mat frame) {
+	public void showImage(Image image) {
 
-		imageView.setImage(mat2Image(frame));
+		imageView.setImage(image);
 	}
 	
 	private double[] BGR2HSV (double[] bgr) {
@@ -149,32 +91,5 @@ public class HSV {
 		hsv[2] = max;
 		
 		return hsv;
-	}
-	
-	private Image mat2Image(Mat frame) {
-		MatOfByte buffer = new MatOfByte();
-
-		Imgcodecs.imencode(".png", frame, buffer);
-
-		return new Image(new ByteArrayInputStream(buffer.toArray()));
-	}
-	
-	private void stopAcquisition() {
-		if (this.timer != null && !this.timer.isShutdown()) {
-			try {
-				this.timer.shutdown();
-				this.timer.awaitTermination(33, TimeUnit.MILLISECONDS);
-			} catch (InterruptedException e) {
-				System.err.println("Exception in stopping the frame capture, trying to release the camera now... " + e);
-			}
-		}
-		
-		if (this.videoCapture.isOpened()) {
-			this.videoCapture.release();
-		}
-	}
-	
-	protected void setClosed() {
-		this.stopAcquisition();
 	}
 }
