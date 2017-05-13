@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Pane prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.InformationController">
+   <children>
+      <Text layoutX="50.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Frame count" />
+      <Text layoutX="50.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Width" />
+      <Text layoutX="50.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Height" />
+      <Text layoutX="50.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FPS" />
+      <Text layoutX="50.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pos frames" />
+      <Text fx:id="count" layoutX="150.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Text fx:id="width" layoutX="150.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Text fx:id="height" layoutX="150.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Text fx:id="fps" layoutX="150.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Text fx:id="position" layoutX="150.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+   </children>
+</Pane>
